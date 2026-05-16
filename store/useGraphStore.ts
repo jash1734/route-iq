@@ -43,10 +43,12 @@ type GraphStore = {
   setSelectedEdge: (edge: any) => void;
 
   updateEdge: (
-  edgeId: string,
-  distance: number,
-  traffic: string
-) => void;
+    edgeId: string,
+    distance: number,
+    traffic: string
+  ) => void;
+
+  deleteEdge: (edgeId: string) => void;
 };
 
 export const useGraphStore = create<GraphStore>((set, get) => ({
@@ -72,6 +74,16 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
 setSelectedEdge: (edge) => {
   set({
     selectedEdge: edge,
+  });
+},
+
+deleteEdge: (edgeId) => {
+  set({
+    edges: get().edges.filter(
+      (edge) => edge.id !== edgeId
+    ),
+
+    selectedEdge: null,
   });
 },
 

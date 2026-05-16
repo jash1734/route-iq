@@ -46,6 +46,10 @@ const [edgeDistance, setEdgeDistance] =
 const [edgeTraffic, setEdgeTraffic] =
   useState("low");
 
+  const deleteEdge = useGraphStore(
+  (state) => state.deleteEdge
+);
+
 useEffect(() => {
   if (selectedEdge) {
     setEdgeDistance(
@@ -222,6 +226,15 @@ const updateEdge = useGraphStore(
 
     <option value="high">High Traffic</option>
   </select>
+
+  <button
+  onClick={() =>
+    deleteEdge(selectedEdge.id)
+  }
+  className="w-full bg-red-500 hover:bg-red-600 p-2 rounded-lg"
+>
+  Delete Road
+</button>
 
   <button
     onClick={() =>
