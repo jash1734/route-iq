@@ -73,6 +73,9 @@ const styledNodes = nodes.map((node) => ({
   : "none",
   },
 }));
+const setSelectedEdge = useGraphStore(
+  (state) => state.setSelectedEdge
+);
   return (
     <div className="flex-1 h-full">
       <ReactFlow
@@ -85,6 +88,7 @@ const styledNodes = nodes.map((node) => ({
           type: "smoothstep",
         }}
         onNodesChange={onNodesChange}
+        onEdgeClick={(_, edge) => setSelectedEdge(edge)}
       >
         <Background
           variant={BackgroundVariant.Dots}

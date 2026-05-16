@@ -20,7 +20,7 @@ type GraphStore = {
   nodes: any[];
   edges: any[];
 
-  addNode: () => void;
+  addNode: (label: string) => void;
   onConnect: (connection: any) => void;
 
   selectedSource: string;
@@ -38,6 +38,15 @@ type GraphStore = {
 
   visitedNodes: string[];
   onNodesChange: (changes: any) => void;
+
+  selectedEdge: any;
+  setSelectedEdge: (edge: any) => void;
+
+  updateEdge: (
+  edgeId: string,
+  distance: number,
+  traffic: string
+) => void;
 };
 
 export const useGraphStore = create<GraphStore>((set, get) => ({
@@ -46,7 +55,7 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
 
   selectedSource: "",
   selectedDestination: "",
-
+  selectedEdge: null,
   shortestPath: [],
   shortestDistance: 0,
   highlightedEdges: [],
@@ -60,27 +69,29 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
   });
 },
 
-  addNode: () => {
-  const locationName = prompt(
-    "Enter location name"
-  );
+setSelectedEdge: (edge) => {
+  set({
+    selectedEdge: edge,
+  });
+},
 
-  if (!locationName) return;
+  addNode: (label) => {
+  if (!label.trim()) return;
 
   const newNode = {
-  id: Date.now().toString(),
+    id: Date.now().toString(),
 
-  type: "custom",
+    type: "custom",
 
-  position: {
-    x: Math.random() * 500,
-    y: Math.random() * 500,
-  },
+    position: {
+      x: Math.random() * 500,
+      y: Math.random() * 500,
+    },
 
-  data: {
-    label: locationName,
-  },
-};
+    data: {
+      label,
+    },
+  };
 
   set({
     nodes: [...get().nodes, newNode],
@@ -99,14 +110,11 @@ setSelectedDestination: (id) => {
   });
 },
 
-onConnect: (connection) => {
-  const distance = prompt("Enter distance in KM");
-
-  const traffic =
-    prompt(
-      "Enter traffic level: low, medium, high"
-    ) || "low";
-
+updateEdge: (
+  edgeId,
+  distance,
+  traffic
+) => {
   let trafficPenalty = 0;
 
   if (traffic === "medium") {
@@ -118,19 +126,45 @@ onConnect: (connection) => {
   }
 
   const finalDistance =
-    (Number(distance) || 0) + trafficPenalty;
+    distance + trafficPenalty;
 
+  const updatedEdges = get().edges.map(
+    (edge) => {
+      if (edge.id === edgeId) {
+        return {
+          ...edge,
+
+          label: `${distance} km | ${traffic}`,
+
+          data: {
+            distance: finalDistance,
+            actualDistance: distance,
+            traffic,
+          },
+        };
+      }
+
+      return edge;
+    }
+  );
+
+  set({
+    edges: updatedEdges,
+  });
+},
+
+onConnect: (connection) => {
   set({
     edges: addEdge(
       {
         ...connection,
 
-        label: `${distance} km | ${traffic}`,
+        label: "0 km | low",
 
         data: {
-          distance: finalDistance,
-          actualDistance: Number(distance) || 0,
-          traffic,
+          distance: 0,
+          actualDistance: 0,
+          traffic: "low",
         },
 
         animated: true,

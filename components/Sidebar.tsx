@@ -1,5 +1,5 @@
 "use client";
-
+import { useState, useEffect } from "react";
 import { useGraphStore } from "@/store/useGraphStore";
 
 export default function Sidebar() {
@@ -33,18 +33,72 @@ const shortestPath = useGraphStore(
   (state) => state.shortestPath
 );
 
+const [locationName, setLocationName] =
+  useState("");
+
+  const selectedEdge = useGraphStore(
+  (state) => state.selectedEdge
+);
+
+const [edgeDistance, setEdgeDistance] =
+  useState(0);
+
+const [edgeTraffic, setEdgeTraffic] =
+  useState("low");
+
+useEffect(() => {
+  if (selectedEdge) {
+    setEdgeDistance(
+      selectedEdge.data?.actualDistance || 0
+    );
+
+    setEdgeTraffic(
+      selectedEdge.data?.traffic || "low"
+    );
+  }
+}, [selectedEdge]);useEffect(() => {
+  if (selectedEdge) {
+    setEdgeDistance(
+      selectedEdge.data?.actualDistance || 0
+    );
+
+    setEdgeTraffic(
+      selectedEdge.data?.traffic || "low"
+    );
+  }
+}, [selectedEdge]);
+
+const updateEdge = useGraphStore(
+  (state) => state.updateEdge
+);
+
   return (
     <div className="w-72 border-r border-white/10 p-4 space-y-5">
       <h2 className="text-lg font-semibold">
         Controls
       </h2>
 
-      <button
-        onClick={addNode}
-        className="w-full bg-blue-500 hover:bg-blue-600 transition p-2 rounded-lg"
-      >
-        Add Location
-      </button>
+      <div className="space-y-2">
+  <input
+    type="text"
+    placeholder="Enter location"
+    value={locationName}
+    onChange={(e) =>
+      setLocationName(e.target.value)
+    }
+    className="w-full bg-[#141B34] p-2 rounded-lg outline-none"
+  />
+
+  <button
+    onClick={() => {
+      addNode(locationName);
+      setLocationName("");
+    }}
+    className="w-full bg-blue-500 hover:bg-blue-600 transition p-2 rounded-lg"
+  >
+    Add Location
+  </button>
+</div>
 
       <div className="space-y-2">
         <label className="text-sm text-white/70">
@@ -118,6 +172,70 @@ const shortestPath = useGraphStore(
   })
   .join(" → ")}
     </p>
+  </div>
+)}
+{selectedEdge && (
+  <div className="bg-[#141B34] p-4 rounded-lg space-y-3">
+    <h3 className="font-semibold text-purple-400">
+      Edit Road
+    </h3>
+
+    <p className="text-sm">
+  {
+    nodes.find(
+      (node) =>
+        node.id === selectedEdge.source
+    )?.data.label
+  }
+  {" → "}
+  {
+    nodes.find(
+      (node) =>
+        node.id === selectedEdge.target
+    )?.data.label
+  }
+</p>
+
+    <div className="space-y-3">
+  <input
+    type="text"
+    value={edgeDistance}
+    onChange={(e) =>
+      setEdgeDistance(Number(e.target.value))
+    }
+    placeholder="Distance"
+    className="w-full bg-[#0B1020] p-2 rounded-lg outline-none"
+  />
+
+  <select
+    value={edgeTraffic}
+    onChange={(e) =>
+      setEdgeTraffic(e.target.value)
+    }
+    className="w-full bg-[#0B1020] p-2 rounded-lg outline-none"
+  >
+    <option value="low">Low Traffic</option>
+
+    <option value="medium">
+      Medium Traffic
+    </option>
+
+    <option value="high">High Traffic</option>
+  </select>
+
+  <button
+    onClick={() =>
+      updateEdge(
+        selectedEdge.id,
+        edgeDistance,
+        edgeTraffic
+      )
+    }
+    className="w-full bg-purple-500 hover:bg-purple-600 p-2 rounded-lg"
+  >
+    Update Road
+  </button>
+</div>
   </div>
 )}
     </div>
