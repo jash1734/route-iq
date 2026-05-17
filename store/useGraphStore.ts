@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { addEdge, applyNodeChanges } from "reactflow";
 import { dijkstra } from "@/algorithms/dijkstra";
+import { astar } from "@/algorithms/astar";
 
 const initialNodes = [
   {
@@ -49,6 +50,13 @@ type GraphStore = {
   ) => void;
 
   deleteEdge: (edgeId: string) => void;
+
+  selectedAlgorithm: string;
+  setSelectedAlgorithm: (
+    algorithm: string
+  ) => void;
+
+  visitedCount: number;
 };
 
 export const useGraphStore = create<GraphStore>((set, get) => ({
@@ -61,13 +69,23 @@ export const useGraphStore = create<GraphStore>((set, get) => ({
   shortestPath: [],
   shortestDistance: 0,
   highlightedEdges: [],
+  selectedAlgorithm: "dijkstra",
   visitedNodes: [],
+  visitedCount: 0,
   onNodesChange: (changes) => {
   set({
     nodes: applyNodeChanges(
       changes,
       get().nodes
     ),
+  });
+},
+
+setSelectedAlgorithm: (
+  algorithm
+) => {
+  set({
+    selectedAlgorithm: algorithm,
   });
 },
 
@@ -195,57 +213,77 @@ findShortestPath: () => {
   } = get();
 
   set({
-  visitedNodes: [],
-  highlightedEdges: [],
-});
+    visitedNodes: [],
+    highlightedEdges: [],
+  });
 
   if (!selectedSource || !selectedDestination) {
     alert("Please select source and destination");
     return;
   }
 
-  const result = dijkstra(
-    nodes,
-    edges,
-    selectedSource,
-    selectedDestination
-  );
+  let result;
+
+  if (get().selectedAlgorithm === "astar") {
+    result = astar(
+      nodes,
+      edges,
+      selectedSource,
+      selectedDestination
+    );
+  } else {
+    result = dijkstra(
+      nodes,
+      edges,
+      selectedSource,
+      selectedDestination
+    );
+  }
 
   const highlightedEdges: string[] = [];
 
-for (let i = 0; i < result.path.length - 1; i++) {
-  const source = result.path[i];
-  const target = result.path[i + 1];
+  for (
+    let i = 0;
+    i < result.path.length - 1;
+    i++
+  ) {
+    const source = result.path[i];
 
-  const edge = edges.find(
-    (edge) =>
-      (edge.source === source &&
-        edge.target === target) ||
-      (edge.source === target &&
-        edge.target === source)
-  );
+    const target = result.path[i + 1];
 
-  if (edge) {
-    highlightedEdges.push(edge.id);
+    const edge = edges.find(
+      (edge) =>
+        (edge.source === source &&
+          edge.target === target) ||
+        (edge.source === target &&
+          edge.target === source)
+    );
+
+    if (edge) {
+      highlightedEdges.push(edge.id);
+    }
   }
-}
 
   set({
-  shortestPath: result.path,
-  shortestDistance: result.distance,
-  highlightedEdges,
-  visitedNodes: [],
-});
-result.visitedOrder.forEach((nodeId, index) => {
-  setTimeout(() => {
-    set((state) => ({
-      visitedNodes: [
-        ...state.visitedNodes,
-        nodeId,
-      ],
-    }));
-  }, index * 500);
-});
+    shortestPath: result.path,
+    shortestDistance: result.distance,
+    highlightedEdges,
+    visitedNodes: [],
+    visitedCount: result.visitedOrder.length,
+  });
+
+  result.visitedOrder.forEach(
+    (nodeId, index) => {
+      setTimeout(() => {
+        set((state) => ({
+          visitedNodes: [
+            ...state.visitedNodes,
+            nodeId,
+          ],
+        }));
+      }, index * 500);
+    }
+  );
 
   console.log(result);
 },

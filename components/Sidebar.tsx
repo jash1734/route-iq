@@ -50,6 +50,20 @@ const [edgeTraffic, setEdgeTraffic] =
   (state) => state.deleteEdge
 );
 
+const selectedAlgorithm = useGraphStore(
+  (state) => state.selectedAlgorithm
+);
+
+const setSelectedAlgorithm =
+  useGraphStore(
+    (state) =>
+      state.setSelectedAlgorithm
+  );
+
+  const visitedCount = useGraphStore(
+  (state) => state.visitedCount
+);
+
 useEffect(() => {
   if (selectedEdge) {
     setEdgeDistance(
@@ -104,6 +118,30 @@ const updateEdge = useGraphStore(
   </button>
 </div>
 
+<div className="space-y-2">
+  <label className="text-sm text-white/70">
+    Algorithm
+  </label>
+
+  <select
+    value={selectedAlgorithm}
+    onChange={(e) =>
+      setSelectedAlgorithm(
+        e.target.value
+      )
+    }
+    className="w-full bg-[#141B34] p-2 rounded-lg outline-none"
+  >
+    <option value="dijkstra">
+      Dijkstra
+    </option>
+
+    <option value="astar">
+      A*
+    </option>
+  </select>
+</div>
+
       <div className="space-y-2">
         <label className="text-sm text-white/70">
           Source
@@ -155,27 +193,58 @@ const updateEdge = useGraphStore(
   Find Route
 </button>
 {shortestPath.length > 0 && (
-  <div className="bg-[#141B34] p-3 rounded-lg space-y-2">
+  <div className="bg-[#141B34] p-4 rounded-lg space-y-3">
     <h3 className="font-semibold text-blue-400">
-      Shortest Route
+      Route Analytics
     </h3>
 
-    <p className="text-sm">
-      Distance: {shortestDistance} km
-    </p>
+    <div className="space-y-1 text-sm">
+      <p>
+        Algorithm:{" "}
+        <span className="text-purple-400 capitalize">
+          {selectedAlgorithm}
+        </span>
+      </p>
 
-    <p className="text-sm break-words">
-      Path:{" "}
-{shortestPath
-  .map((id) => {
-    const node = nodes.find(
-      (node) => node.id === id
-    );
+      <p>
+        Distance:{" "}
+        <span className="text-green-400">
+          {shortestDistance} km
+        </span>
+      </p>
 
-    return node?.data.label;
-  })
-  .join(" → ")}
-    </p>
+      <p>
+        Visited Nodes:{" "}
+        <span className="text-yellow-400">
+          {visitedCount}
+        </span>
+      </p>
+
+      <p>
+        Path Length:{" "}
+        <span className="text-pink-400">
+          {shortestPath.length}
+        </span>
+      </p>
+    </div>
+
+    <div>
+      <p className="text-sm mb-1">
+        Optimal Route
+      </p>
+
+      <p className="text-sm break-words text-white/70">
+        {shortestPath
+          .map((id) => {
+            const node = nodes.find(
+              (node) => node.id === id
+            );
+
+            return node?.data.label;
+          })
+          .join(" → ")}
+      </p>
+    </div>
   </div>
 )}
 {selectedEdge && (
