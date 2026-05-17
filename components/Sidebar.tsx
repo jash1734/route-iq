@@ -95,12 +95,12 @@ const updateEdge = useGraphStore(
 );
 
   return (
-    <div className="w-72 border-r border-white/10 p-4 space-y-5">
+    <div className="w-80 h-full overflow-y-auto border-r border-white/10 bg-[#0F172A]/80 backdrop-blur-md p-5 space-y-5">
       <h2 className="text-lg font-semibold">
         Controls
       </h2>
 
-      <div className="space-y-2">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-3">
   <input
     type="text"
     placeholder="Enter location"
@@ -108,7 +108,7 @@ const updateEdge = useGraphStore(
     onChange={(e) =>
       setLocationName(e.target.value)
     }
-    className="w-full bg-[#141B34] p-2 rounded-lg outline-none"
+    className="bg-[#0B1020] border border-white/10 focus:border-blue-500 transition p-2 rounded-xl outline-none w-full"
   />
 
   <button
@@ -116,13 +116,13 @@ const updateEdge = useGraphStore(
       addNode(locationName);
       setLocationName("");
     }}
-    className="w-full bg-blue-500 hover:bg-blue-600 transition p-2 rounded-lg"
+    className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 p-2 rounded-xl font-medium shadow-lg"
   >
     Add Location
   </button>
 </div>
 
-<div className="space-y-2">
+<div className="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-3">
   <label className="text-sm text-white/70">
     Algorithm
   </label>
@@ -134,7 +134,7 @@ const updateEdge = useGraphStore(
         e.target.value
       )
     }
-    className="w-full bg-[#141B34] p-2 rounded-lg outline-none"
+    className="bg-[#0B1020] border border-white/10 focus:border-blue-500 transition p-2 rounded-xl outline-none w-full"
   >
     <option value="dijkstra">
       Dijkstra
@@ -146,7 +146,7 @@ const updateEdge = useGraphStore(
   </select>
 </div>
 
-      <div className="space-y-2">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-3">
         <label className="text-sm text-white/70">
           Source
         </label>
@@ -156,7 +156,7 @@ const updateEdge = useGraphStore(
   onChange={(e) =>
     setSelectedSource(e.target.value)
   }
-  className="w-full bg-[#141B34] p-2 rounded-lg outline-none"
+  className="bg-[#0B1020] border border-white/10 focus:border-blue-500 transition p-2 rounded-xl outline-none w-full"
 >
   <option value="">Select Source</option>
 
@@ -168,7 +168,7 @@ const updateEdge = useGraphStore(
 </select>
       </div>
 
-      <div className="space-y-2">
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-3">
         <label className="text-sm text-white/70">
           Destination
         </label>
@@ -178,7 +178,7 @@ const updateEdge = useGraphStore(
   onChange={(e) =>
     setSelectedDestination(e.target.value)
   }
-  className="w-full bg-[#141B34] p-2 rounded-lg outline-none"
+  className="bg-[#0B1020] border border-white/10 focus:border-blue-500 transition p-2 rounded-xl outline-none w-full"
 >
   <option value="">Select Destination</option>
 
@@ -192,13 +192,13 @@ const updateEdge = useGraphStore(
 
       <button
   onClick={findShortestPath}
-  className="w-full bg-purple-500 hover:bg-purple-600 transition p-2 rounded-lg"
+  className="w-full bg-gradient-to-r from-blue-500 to-purple-500 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 p-2 rounded-xl font-medium shadow-lg"
 >
   Find Route
 </button>
 <button
   onClick={resetGraph}
-  className="w-full bg-red-500 hover:bg-red-600 transition p-2 rounded-lg"
+  className="w-full bg-gradient-to-r from-red-500 to-pink-500 hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 p-2 rounded-xl font-medium shadow-lg"
 >
   Reset Graph
 </button>
