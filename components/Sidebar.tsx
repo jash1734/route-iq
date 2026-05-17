@@ -255,6 +255,59 @@ const updateEdge = useGraphStore(
           .join(" → ")}
       </p>
     </div>
+    <h3 className="font-semibold text-cyan-400">
+    Algorithm Insights
+  </h3>
+
+  {selectedAlgorithm === "dijkstra" ? (
+    <div className="space-y-2 text-sm">
+      <p>
+        Uses weighted shortest path
+        search
+      </p>
+
+      <p>
+        Heuristic: No
+      </p>
+
+      <p>
+        Optimal Path: Yes
+      </p>
+
+      <p>
+        Best For: Guaranteed shortest
+        routes
+      </p>
+
+      <p>
+        Time Complexity:
+        O((V + E) log V)
+      </p>
+    </div>
+  ) : (
+    <div className="space-y-2 text-sm">
+      <p>
+        Uses heuristic-guided search
+      </p>
+
+      <p>
+        Heuristic: Yes
+      </p>
+
+      <p>
+        Optimal Path: Depends on
+        heuristic
+      </p>
+
+      <p>
+        Best For: Faster route finding
+      </p>
+
+      <p>
+        Average Complexity: O(E)
+      </p>
+    </div>
+  )}
   </div>
 )}
 {selectedEdge && (
