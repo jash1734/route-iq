@@ -57,6 +57,8 @@ type GraphStore = {
   ) => void;
 
   visitedCount: number;
+
+  resetGraph: () => void;
 };
 
 export const useGraphStore = create<GraphStore>((set, get) => ({
@@ -100,6 +102,26 @@ deleteEdge: (edgeId) => {
     edges: get().edges.filter(
       (edge) => edge.id !== edgeId
     ),
+
+    selectedEdge: null,
+  });
+},
+
+resetGraph: () => {
+  set({
+    nodes: initialNodes,
+
+    edges: [],
+
+    shortestPath: [],
+
+    shortestDistance: 0,
+
+    highlightedEdges: [],
+
+    visitedNodes: [],
+
+    visitedCount: 0,
 
     selectedEdge: null,
   });

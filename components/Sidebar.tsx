@@ -64,6 +64,10 @@ const setSelectedAlgorithm =
   (state) => state.visitedCount
 );
 
+const resetGraph = useGraphStore(
+  (state) => state.resetGraph
+);
+
 useEffect(() => {
   if (selectedEdge) {
     setEdgeDistance(
@@ -191,6 +195,12 @@ const updateEdge = useGraphStore(
   className="w-full bg-purple-500 hover:bg-purple-600 transition p-2 rounded-lg"
 >
   Find Route
+</button>
+<button
+  onClick={resetGraph}
+  className="w-full bg-red-500 hover:bg-red-600 transition p-2 rounded-lg"
+>
+  Reset Graph
 </button>
 {shortestPath.length > 0 && (
   <div className="bg-[#141B34] p-4 rounded-lg space-y-3">
