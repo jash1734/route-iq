@@ -88,6 +88,9 @@ export default function Sidebar() {
   const [locationName, setLocationName] = useState("");
   const [edgeDistance, setEdgeDistance] = useState(0);
   const [edgeTraffic, setEdgeTraffic] = useState("low");
+  const exportGraph = useGraphStore(
+    (state) => state.exportGraph
+  );
 
   useEffect(() => {
     if (selectedEdge) {
@@ -476,6 +479,21 @@ export default function Sidebar() {
             <button className="sb-btn sb-btn-danger" onClick={resetGraph}>
               ↺ Reset Graph
             </button>
+            
+            <button
+              className="sb-btn"
+              style={{
+                background: `linear-gradient(135deg, ${algoColor} 0%, ${
+                  selectedAlgorithm === "dijkstra" ? "#0066cc" : "#b45309"
+                } 100%)`,
+                color: "#fff",
+                boxShadow: `0 2px 14px ${algoColor}30`,
+              }}
+              onClick={exportGraph}
+            >
+              ↑ Export Graph
+            </button>
+
           </div>
 
           {/* ── Results ──────────────────────────────────────────── */}

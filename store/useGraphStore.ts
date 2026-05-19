@@ -3,17 +3,7 @@ import { addEdge, applyNodeChanges } from "reactflow";
 import { dijkstra } from "@/algorithms/dijkstra";
 import { astar } from "@/algorithms/astar";
 
-const initialNodes = [
-  {
-    id: "1",
-
-    type: "custom",
-
-    position: { x: 100, y: 100 },
-
-    data: { label: "Ahmedabad" },
-  },
-];
+const initialNodes: any[] = [];
 
 const initialEdges: any[] = [];
 
@@ -59,6 +49,8 @@ type GraphStore = {
   visitedCount: number;
 
   resetGraph: () => void;
+
+  exportGraph: () => void;
 };
 
 export const useGraphStore = create<GraphStore>((set, get) => ({
@@ -125,6 +117,34 @@ resetGraph: () => {
 
     selectedEdge: null,
   });
+},
+
+exportGraph: () => {
+  const graphData = {
+    nodes: get().nodes,
+    edges: get().edges,
+  };
+
+  const blob = new Blob(
+    [JSON.stringify(graphData, null, 2)],
+    {
+      type: "application/json",
+    }
+  );
+
+  const url =
+    URL.createObjectURL(blob);
+
+  const a =
+    document.createElement("a");
+
+  a.href = url;
+
+  a.download = "route-graph.json";
+
+  a.click();
+
+  URL.revokeObjectURL(url);
 },
 
   addNode: (label) => {
