@@ -77,7 +77,7 @@ const setSelectedEdge = useGraphStore(
   (state) => state.setSelectedEdge
 );
   return (
-    <div className="flex-1 h-full">
+    <div className="w-full h-full bg-[radial-gradient(circle_at_top,#0F172A,#020617)]">
       <ReactFlow
         nodes={styledNodes}
         edges={styledEdges}
