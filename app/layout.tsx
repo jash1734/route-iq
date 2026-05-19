@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "RouteIQ",
+  title: "VertexFlow",
   description:
     "Interactive route optimization and pathfinding visualizer using Dijkstra and A* algorithms with traffic-aware routing.",
 };

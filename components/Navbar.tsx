@@ -141,7 +141,7 @@ export default function Navbar() {
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div className="nb-pulse" />
             <div>
-              <div className="nb-brand">RouteIQ</div>
+              <div className="nb-brand">VertexFlow</div>
               <div className="nb-brand-sub">Path Visualizer</div>
             </div>
           </div>
