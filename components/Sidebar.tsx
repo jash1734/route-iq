@@ -3,8 +3,6 @@
 import { useState, useEffect } from "react";
 import { useGraphStore } from "@/store/useGraphStore";
 
-/* ─── tiny sub-components ─────────────────────────────────────────────────── */
-
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="sb-section-label">
@@ -64,8 +62,6 @@ function StyledInput({
     />
   );
 }
-
-/* ─── main component ───────────────────────────────────────────────────────── */
 
 export default function Sidebar() {
   const addNode = useGraphStore((state) => state.addNode);
@@ -374,7 +370,6 @@ export default function Sidebar() {
       <aside className="sb-root">
         <div className="sb-scroll">
 
-          {/* ── Add Location ─────────────────────────────────────── */}
           <div className="sb-panel">
             <SectionLabel>Add Location</SectionLabel>
             <StyledInput
@@ -393,7 +388,6 @@ export default function Sidebar() {
             </button>
           </div>
 
-          {/* ── Algorithm ────────────────────────────────────────── */}
           <div className="sb-panel">
             <SectionLabel>Algorithm</SectionLabel>
             <StyledSelect
@@ -406,7 +400,6 @@ export default function Sidebar() {
             </StyledSelect>
           </div>
 
-          {/* ── Route Selection ──────────────────────────────────── */}
           <div className="sb-panel">
             <SectionLabel>Route</SectionLabel>
 
@@ -496,7 +489,6 @@ export default function Sidebar() {
 
           </div>
 
-          {/* ── Results ──────────────────────────────────────────── */}
           {shortestPath.length > 0 && (
             <div className="sb-result-panel">
               <div
@@ -565,7 +557,6 @@ export default function Sidebar() {
                 </div>
               </div>
 
-              {/* Algorithm insights */}
               <div>
                 <div
                   style={{
@@ -651,7 +642,6 @@ export default function Sidebar() {
             </div>
           )}
 
-          {/* ── Edge Editor ──────────────────────────────────────── */}
           {selectedEdge && (
             <div className="sb-edge-panel">
               <div className="sb-edge-title">Edit Road</div>
